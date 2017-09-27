@@ -1,0 +1,4 @@
+before_script:
+  - node -v
+  - npm -v
+script: node
