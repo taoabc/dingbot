@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "pm2 startOrRestart ./pm2.yml",
     "test": "standard"
   },
   "keywords": [],
@@ -15,6 +16,7 @@
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
     "mocha": "^3.5.3",
+    "pm2": "^2.7.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "standard": "^10.0.3"

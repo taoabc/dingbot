@@ -23,12 +23,12 @@ function requestDingbot (token, body) {
 
 function handleBuildEvent (ctx) {
   const body = ctx.request.body
-  if (body.tag === false) {
+  if (body.build_status === 'failed') {
     requestDingbot(ctx.query.dingtoken, {
       msgtype: 'markdown',
       markdown: {
         title: '构建失败',
-        text: `## ${body.commit.author_name} 代码在 ${body.build_stage} 阶段构建失败\n> 提交信息：${body.commit.message}\n> hash:[${body.commit.sha}](http://106.75.104.74/${body.project_name}/commit/${body.commit.sha})\n`
+        text: `## ${body.commit.author_name} 代码在 ${body.build_stage} 阶段构建失败\n> 提交信息：${body.commit.message}\n> hash:[${body.commit.sha}](${body.repository.homepage}/commit/${body.commit.sha})\n`
       },
       at: {
         atMobiles: [],
@@ -43,6 +43,7 @@ router.post('/', async (ctx, next) => {
   switch (postbody.object_kind) {
     case 'build':
       ctx.state.body = postbody
+      console.log(ctx.state.body + '\n\n')
       handleBuildEvent(ctx)
       break
     default:
