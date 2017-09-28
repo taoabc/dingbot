@@ -10,8 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "js-yaml": "^3.10.0",
     "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
+    "mocha": "^3.5.3",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "standard": "^10.0.3"
   }
 }
