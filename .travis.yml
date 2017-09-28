@@ -1,5 +1,14 @@
-before_script:
-  - node -v
-  - npm -v
+language: node_js
 
-script: node
+node_js:
+  - "iojs"
+  - "node"
+
+cache:
+  directories:
+    - "node_modules"
+
+before_install:
+  - node -v
+install:
+  - npm install
