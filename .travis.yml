@@ -1,7 +1,6 @@
 language: node_js
 
 node_js:
-  - "iojs"
   - "node"
 
 cache:
@@ -9,6 +8,6 @@ cache:
     - "node_modules"
 
 before_install:
-  - node -v
+
 install:
   - npm install
