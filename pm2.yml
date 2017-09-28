@@ -1,6 +1,6 @@
 apps:
-  - script: index.js
+  - script: app/index.js
     name: dingbot
     watch: true
-    instances: 4
+    instances: 0
     exec_mode: cluster
