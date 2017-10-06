@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2 startOrRestart ./pm2.yml",
-    "test": "standard"
+    "test": "standard && mocha --recursive test/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.1.2",
     "js-yaml": "^3.10.0",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
