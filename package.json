@@ -1,7 +1,7 @@
 {
   "name": "dingbot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.2",
+  "description": "robot for dingding",
   "main": "index.js",
   "scripts": {
     "start": "pm2 startOrRestart ./pm2.yml",

@@ -9,12 +9,10 @@ const app = new Koa()
 
 function applyRouters (app, ...routers) {
   for (const router of routers) {
-    console.log(router)
     app.use(router.routes())
     app.use(router.allowedMethods())
   }
 }
-console.log(gitlabRouter())
 
 app.use(bodyParser())
 app.use(tokenValidate())

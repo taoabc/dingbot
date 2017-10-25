@@ -1,0 +1,42 @@
+{
+  "object_kind": "build",
+  "ref": "develop",
+  "tag": false,
+  "before_sha": "0000000000000000000000000000000000000000",
+  "sha": "7329f64703c501311e29c64a1f30929f55ae275a",
+  "build_id": 157,
+  "build_name": "standard",
+  "build_stage": "lint",
+  "build_status": "success",
+  "build_started_at": "2017-10-25 08:07:03 UTC",
+  "build_finished_at": "2017-10-25 08:08:06 UTC",
+  "build_duration": 63.262802044,
+  "build_allow_failure": false,
+  "project_id": 707,
+  "project_name": "shuangshi-its / blackboard",
+  "user": {
+    "id": null,
+    "name": null,
+    "email": null
+  },
+  "commit": {
+    "id": 67167,
+    "sha": "7329f64703c501311e29c64a1f30929f55ae275a",
+    "message": "format",
+    "author_name": "huhaitao",
+    "author_email": "huhaitao@100tal.com",
+    "status": "success",
+    "duration": 231,
+    "started_at": "2017-10-25 04:11:01 UTC",
+    "finished_at": "2017-10-25 08:08:06 UTC"
+  },
+  "repository": {
+    "name": "blackboard",
+    "url": "git@10.2.250.21:shuangshi-its/blackboard.git",
+    "description": "blackboard",
+    "homepage": "http://10.2.250.21/shuangshi-its/blackboard",
+    "git_http_url": "http://10.2.250.21/shuangshi-its/blackboard.git",
+    "git_ssh_url": "git@10.2.250.21:shuangshi-its/blackboard.git",
+    "visibility_level": 0
+  }
+}
