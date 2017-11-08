@@ -13,11 +13,11 @@
   "dependencies": {
     "chai": "^4.1.2",
     "js-yaml": "^3.10.0",
-    "koa": "^2.3.0",
+    "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
-    "mocha": "^3.5.3",
-    "pm2": "^2.7.1",
+    "mocha": "^4.0.1",
+    "pm2": "^2.7.2",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "standard": "^10.0.3"
