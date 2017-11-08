@@ -3,7 +3,7 @@ const bodyParser = require('koa-bodyparser')
 const tokenValidate = require('./middleware/token-validate')
 const output = require('./middleware/output')
 const gitlabRouter = require('./routes/gitlab')
-const config = require('./services/config')
+const config = require('../config')
 
 const app = new Koa()
 
@@ -19,4 +19,4 @@ app.use(tokenValidate())
 applyRouters(app, gitlabRouter())
 app.use(output())
 
-app.listen(config().port)
+app.listen(config.port)

@@ -1,8 +1,7 @@
-const config = require('../services/config')
-const cfg = config()
+const config = require('../../config')
 
 async function tokenValidate (ctx, next) {
-  if (ctx.query.token === cfg.token) {
+  if (ctx.query.token === config.token) {
     await next()
   } else {
     ctx.body = {
