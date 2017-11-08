@@ -1,5 +1,7 @@
 # own
 .DS_Store
+at-table.json
+config.json
 
 # Logs
 logs
