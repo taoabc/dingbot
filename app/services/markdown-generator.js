@@ -46,7 +46,7 @@ function generateMergeRequestEvent (data) {
     msgtype: 'markdown',
     markdown: {
       title: `合并请求`,
-      text: `## ${makeRemindText(userName, mobiles, true)} ${data.user.username}请求分支合入${data.object_attributes.target_branch}\n` +
+      text: `## ${makeRemindText(userName, mobiles, true)}，${data.user.username}请求分支合入${data.object_attributes.target_branch}\n` +
             `> 源分支：${data.object_attributes.source_branch}\n\n` +
             `> 合并信息：[${data.object_attributes.title}](${data.object_attributes.url})\n\n` +
             `> 最后提交信息：${data.object_attributes.last_commit.message}`

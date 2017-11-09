@@ -19,6 +19,7 @@ module.exports = function () {
   const router = new KoaRouter()
   router.post('/gitlab', async (ctx, next) => {
     const postbody = ctx.request.body
+    console.log(postbody)
     switch (postbody.object_kind) {
       case 'build':
         handleBuildEvent(ctx)
