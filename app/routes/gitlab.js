@@ -16,7 +16,10 @@ function handleBuildEvent (ctx) {
 
 function handleMergeRequestEvent (ctx) {
   const body = ctx.request.body
-  dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestEvent(body))
+  // 只处理新打开
+  if (body.object_attributes.state === 'opened' || body.object_attributes.state === 'reopened') {
+    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestEvent(body))
+  }
 }
 
 module.exports = function () {
