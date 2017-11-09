@@ -4,6 +4,7 @@
 const KoaRouter = require('koa-router')
 const dingbotRequest = require('../services/dingbot-request')
 const markdownGenerator = require('../services/markdown-generator')
+const logger = require('../services/logger')
 
 function handleBuildEvent (ctx) {
   const body = ctx.request.body
@@ -19,7 +20,7 @@ module.exports = function () {
   const router = new KoaRouter()
   router.post('/gitlab', async (ctx, next) => {
     const postbody = ctx.request.body
-    console.log(postbody)
+    logger.info(postbody)
     switch (postbody.object_kind) {
       case 'build':
         handleBuildEvent(ctx)

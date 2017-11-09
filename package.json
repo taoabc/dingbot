@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2 startOrRestart ./pm2.yml",
-    "test": "standard && mocha --recursive test/"
+    "test": "standard && mocha --recursive test/",
+    "prod": "cross-env NODE_ENV=production pm2 startOrRestart ./pm2.yml"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,10 @@
     "pm2": "^2.7.2",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "winston": "^3.0.0-rc1"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.1"
   }
 }
