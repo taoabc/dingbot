@@ -1,5 +1,35 @@
-console.log(process.cwd())
+const _ = require('lodash')
+const atTable = require('../../at-table')
 
-module.exports = (name, email) => {
-  return '13333333333'
+function mobilesFromAuthor (authorName, authorEmail) {
+  let finded
+  if (authorEmail) {
+    finded = _.find(atTable, { authorEmail })
+  }
+  if (!finded && authorName) {
+    finded = _.find(atTable, { authorName })
+  }
+  if (finded) {
+    return [ finded.phone ]
+  }
+  return []
+}
+
+function modilesFromUser (userName, userEmail) {
+  let finded
+  if (userEmail) {
+    finded = _.find(atTable, { userEmail })
+  }
+  if (!finded && userName) {
+    finded = _.find(atTable, { userName })
+  }
+  if (finded) {
+    return [ finded.phone ]
+  }
+  return []
+}
+
+module.exports = {
+  mobilesFromAuthor,
+  modilesFromUser
 }
