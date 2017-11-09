@@ -28,8 +28,8 @@ function generateBuildEvent (data) {
     markdown: {
       title: `构建${status}`,
       text: `## ${makeRemindText(authorName, mobiles, data.build_status !== 'success')} 代码在**${data.build_stage}**阶段${status}\n` +
-            `> 分支：${data.ref}\n` +
-            `> 最后提交信息：${data.commit.message}\n` +
+            `> 分支：${data.ref}\n\n` +
+            `> 最后提交信息：${data.commit.message}\n\n` +
             `> hash:[${shortSha}](${data.repository.homepage}/commit/${data.commit.sha})`
     },
     at: {
