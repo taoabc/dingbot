@@ -5,13 +5,28 @@ const path = require('path')
 const logdir = path.resolve(__dirname, '../../logs')
 fs.ensureDirSync(logdir)
 
+function createFileTransport (dir, filename, level) {
+  const filepath = path.resolve(dir, filename)
+  const opt = {
+    filename: filepath
+    // maxsize: 2000,
+    // maxFiles: 5,
+    // zippedArchive: true
+  }
+  if (level) {
+    opt.level = level
+  }
+  return new winston.transports.File(opt)
+}
+
 const logger = winston.createLogger({
   level: 'info',
   transports: [
-    new winston.transports.File({ filename: 'logs/combined.log' })
+    createFileTransport(logdir, 'error.log', 'error'),
+    createFileTransport(logdir, 'combined.log')
   ],
   exceptionHandlers: [
-    new winston.transports.File({ filename: 'logs/exceptions.log' })
+    createFileTransport(logdir, 'exceptions.log')
   ]
 })
 

@@ -1,4 +1,5 @@
 const rp = require('request-promise-native')
+const logger = require('./logger')
 
 function doRequest (token, body) {
   const opts = {
@@ -10,6 +11,8 @@ function doRequest (token, body) {
   }
   rp(opts).then(str => {
     console.log(str)
+  }).catch(err => {
+    logger.error(err)
   })
 }
 
