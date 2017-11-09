@@ -4,3 +4,5 @@ apps:
     watch: true
     instances: 0
     exec_mode: cluster
+    ignore_watch:
+      - logs
