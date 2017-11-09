@@ -15,7 +15,7 @@ function mobilesFromAuthor (authorName, authorEmail) {
   return []
 }
 
-function modilesFromUser (userName, userEmail) {
+function mobilesFromUser (userName, userEmail) {
   let finded
   if (userEmail) {
     finded = _.find(atTable, { userEmail })
@@ -31,5 +31,5 @@ function modilesFromUser (userName, userEmail) {
 
 module.exports = {
   mobilesFromAuthor,
-  modilesFromUser
+  mobilesFromUser
 }
