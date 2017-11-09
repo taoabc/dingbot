@@ -8,7 +8,10 @@ const logger = require('../services/logger')
 
 function handleBuildEvent (ctx) {
   const body = ctx.request.body
-  dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateBuildEvent(body))
+  // 中间过程不处理
+  if (body.build_status === 'success' || body.build_status === 'failed') {
+    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateBuildEvent(body))
+  }
 }
 
 function handleMergeRequestEvent (ctx) {

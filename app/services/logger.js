@@ -9,6 +9,9 @@ const logger = winston.createLogger({
   level: 'info',
   transports: [
     new winston.transports.File({ filename: 'logs/combined.log' })
+  ],
+  exceptionHandlers: [
+    new winston.transports.File({ filename: 'logs/exceptions.log' })
   ]
 })
 
