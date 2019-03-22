@@ -1,32 +1,39 @@
 {
   "name": "dingbot",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "robot for dingding",
   "main": "index.js",
   "scripts": {
     "start": "pm2 startOrRestart ./pm2.yml",
-    "test": "standard && mocha --recursive test/",
+    "test": "tslint -p . --fix",
+    "build": "tsc",
     "prod": "cross-env NODE_ENV=production pm2 startOrRestart ./pm2.yml"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fs-extra": "^5.0.0",
-    "js-yaml": "^3.11.0",
-    "koa": "^2.5.0",
-    "koa-bodyparser": "^4.2.0",
+    "fs-extra": "^7.0.1",
+    "js-yaml": "^3.13.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "lodash": "^4.17.5",
-    "pm2": "^2.10.2",
-    "request": "^2.85.0",
-    "request-promise-native": "^1.0.5",
-    "winston": "^3.0.0-rc4"
+    "lodash": "^4.17.11",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "cross-env": "^5.1.4",
-    "mocha": "^5.0.5",
-    "standard": "^11.0.1"
+    "@types/fs-extra": "^5.0.5",
+    "@types/koa": "^2.0.48",
+    "@types/koa-bodyparser": "^4.2.2",
+    "@types/koa-router": "^7.0.40",
+    "@types/lodash": "^4.14.123",
+    "@types/request-promise-native": "^1.0.15",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "mocha": "^6.0.2",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
   }
 }

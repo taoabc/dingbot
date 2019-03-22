@@ -2,6 +2,7 @@
 .DS_Store
 at-table.json
 config.json
+dist/
 
 # Logs
 logs
