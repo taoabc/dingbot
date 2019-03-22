@@ -10,7 +10,7 @@ function doRequest(token: string, body: any) {
     body,
   };
   rp(opts).then((str) => {
-    console.log(str);
+    // console.log(str);
   }).catch((err) => {
     logger.error(err);
   });

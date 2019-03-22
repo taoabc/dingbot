@@ -1,5 +1,5 @@
 apps:
-  - script: app/index.js
+  - script: dist/index.js
     name: dingbot
     watch: true
     instances: 0
