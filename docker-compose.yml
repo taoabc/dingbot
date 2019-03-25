@@ -1,0 +1,9 @@
+version: "3"
+services:
+  server:
+    image: keymetrics/pm2:10-alpine
+    working_dir: /app
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./:/app
