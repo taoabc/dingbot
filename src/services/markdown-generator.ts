@@ -77,7 +77,7 @@ function generatePipelineEvent(data: any) {
     markdown: {
       title: `构建${status}`,
       text: `## ${people} 代码构建 **${status}**\n` +
-            `> 分支：${data.ref}\n\n` +
+            `> 分支：${data.object_attributes.ref}\n\n` +
             `> 最后提交信息：${data.commit.message}\n\n` +
             `> 点击查看:[${shortSha}](${data.commit.url})`,
     },
