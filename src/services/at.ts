@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { atTable } from '../config';
+import { atTable } from '../data';
 
 function mobilesFromAuthor(authorName: string, authorEmail: string) {
   let finded;

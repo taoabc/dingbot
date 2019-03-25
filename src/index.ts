@@ -3,7 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import tokenValidate from './middleware/token-validate';
 import output from './middleware/output';
 import gitlabRouter from './routes/gitlab';
-import { config } from './config';
+import { config } from './data';
 import KoaRouter from 'koa-router';
 
 const app = new Koa();

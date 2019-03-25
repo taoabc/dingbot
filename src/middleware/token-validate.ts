@@ -1,4 +1,4 @@
-import { config } from '../config';
+import { config } from '../data';
 import { RouterContext } from 'koa-router';
 
 async function tokenValidate(ctx: RouterContext, next: () => Promise<any>) {

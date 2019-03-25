@@ -40,7 +40,7 @@ function generateBuildEvent(data: any) {
 }
 
 function generateMergeRequestEvent(data: any) {
-  const userName = data.assignee.username;
+  const userName = data.object_attributes.assignee.username;
   const mobiles = at.mobilesFromUser(userName, null);
   return {
     msgtype: 'markdown',
