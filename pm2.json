@@ -1,0 +1,16 @@
+{
+  "apps" : [{
+    "name": "dingbot",
+    "script": "dist/index.js",
+    "watch": true,
+    "ignore_watch": ["logs"],
+    "instances": 0,
+    "exec_mode": "cluster",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "env_production": {
+      "NODE_ENV": "production"
+    }
+  }]
+}
