@@ -6,6 +6,7 @@
   "scripts": {
     "start": "pm2 startOrRestart ./pm2.yml",
     "test": "tslint -p . --fix",
+    "lint": "tslint -p .",
     "build": "tsc",
     "build:watch": "tsc -w",
     "prod": "cross-env NODE_ENV=production pm2 startOrRestart ./pm2.yml"

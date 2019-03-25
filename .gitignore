@@ -1,7 +1,7 @@
 # own
 .DS_Store
-at-table.json
-config.json
+at-table.ts
+config.ts
 dist/
 
 # Logs
