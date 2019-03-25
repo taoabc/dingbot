@@ -1,6 +1,6 @@
 import at from './at';
 
-function makeRemindText(userName: string, mobiles: string[], preferAt = false) {
+function makeRemindText(realName: string, mobiles: string[], preferAt = false) {
   if (preferAt && mobiles.length > 0) {
     let str = '';
     mobiles.forEach((m) => {
@@ -8,7 +8,7 @@ function makeRemindText(userName: string, mobiles: string[], preferAt = false) {
     });
     return str;
   } else {
-    return userName;
+    return realName;
   }
 }
 
@@ -21,9 +21,10 @@ function generateBuildEvent(data: any) {
   }
   const authorName = data.commit.author_name;
   const authorEmail = data.commit.author_email;
-  const mobiles = at.mobilesFromAuthor(authorName, authorEmail);
+  const mobile = at.getMobile(authorName, authorEmail);
+  const mobiles = mobile ? [ mobile ] : [];
   const shortSha = data.commit.sha.slice(0, 7);
-  const people = makeRemindText(authorName, mobiles, data.build_status !== 'success');
+  const people = makeRemindText(at.tryGetRealName(authorName), mobiles, data.build_status !== 'success');
   return {
     msgtype: 'markdown',
     markdown: {
@@ -40,16 +41,43 @@ function generateBuildEvent(data: any) {
   };
 }
 
-function generateMergeRequestEvent(data: any) {
+function generateMergeRequestOpenEvent(data: any) {
   const userName = data.assignee.username;
-  const mobiles = at.mobilesFromUser(userName, null);
-  const remind = makeRemindText(userName, mobiles, true);
+  const mobile = at.getMobile(userName, null);
+  const mobiles = mobile ? [ mobile ] : [];
+  const userRealName = at.tryGetRealName(userName);
+  const remind = makeRemindText(userRealName, mobiles, true);
+  const opRealName = at.tryGetRealName(data.user.username);
   return {
     msgtype: 'markdown',
     markdown: {
       title: `合并请求`,
-      text: `## ${remind}，${data.user.username}请求分支合入${data.object_attributes.target_branch}\n` +
+      text: `## ${remind}，${opRealName} 请求分支合入${data.object_attributes.target_branch}\n` +
             `> 源分支：${data.object_attributes.source_branch}\n\n` +
+            `> 合并信息(点击查看)：[${data.object_attributes.title}](${data.object_attributes.url})\n\n` +
+            `> 最后提交信息：${data.object_attributes.last_commit.message}`,
+    },
+    at: {
+      atMobiles: mobiles,
+      isAtAll: false,
+    },
+  };
+}
+
+function generateMergeRequestClosedEvent(data: any) {
+  const atName = data.object_attributes.last_commit.author.name;
+  const atEmail = data.object_attributes.last_commit.author.email;
+  const mobile = at.getMobile(atName, atEmail);
+  const mobiles = mobile ? [ mobile ] : [];
+  const remind = makeRemindText(at.tryGetRealName(atName), mobiles, true);
+  const opRealName = at.tryGetRealName(data.user.username);
+  return {
+    msgtype: 'markdown',
+    markdown: {
+      title: `合并关闭`,
+      text: `## ${remind}，${opRealName} 关闭了你的合并请求\n` +
+            `> 源分支：${data.object_attributes.source_branch}\n\n` +
+            `> 合入分支：${data.object_attributes.target_branch}\n` +
             `> 合并信息(点击查看)：[${data.object_attributes.title}](${data.object_attributes.url})\n\n` +
             `> 最后提交信息：${data.object_attributes.last_commit.message}`,
     },
@@ -65,13 +93,11 @@ function generatePipelineEvent(data: any) {
   const status = success ? '成功' : '失败';
   const authorName = data.commit.author.name;
   const authorEmail = data.commit.author.email;
-  let mobiles = at.mobilesFromAuthor(authorName, authorEmail);
-  // TODO 这里不稳定，成功的时候用的userName，失败的时候用的authorName，所以两个都取
-  if (mobiles.length === 0) {
-    mobiles = at.mobilesFromUser(authorName, authorEmail);
-  }
+  const mobile = at.getMobile(authorName, authorEmail);
+  const mobiles = mobile ? [ mobile ] : [];
   const shortSha = data.object_attributes.sha.slice(0, 7);
-  const people = makeRemindText(authorName, mobiles, !success);
+  const realName = at.tryGetRealName(authorName);
+  const people = makeRemindText(realName, mobiles, !success);
   return {
     msgtype: 'markdown',
     markdown: {
@@ -90,6 +116,7 @@ function generatePipelineEvent(data: any) {
 
 export default {
   generateBuildEvent,
-  generateMergeRequestEvent,
+  generateMergeRequestOpenEvent,
+  generateMergeRequestClosedEvent,
   generatePipelineEvent,
 };

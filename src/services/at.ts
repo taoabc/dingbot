@@ -1,35 +1,36 @@
 import _ from 'lodash';
 import { atTable } from '../data';
 
-function mobilesFromAuthor(authorName: string, authorEmail: string) {
-  let finded;
-  if (authorEmail) {
-    finded = _.find(atTable, { authorEmail });
-  }
-  if (!finded && authorName) {
-    finded = _.find(atTable, { authorName });
-  }
-  if (finded) {
-    return [ finded.phone ];
-  }
-  return [];
+function tryGetRealName(name: string) {
+  const finded = findPeople(name, null);
+  return finded ? finded.realName : name;
 }
 
-function mobilesFromUser(userName: string, userEmail: string | null) {
+// 这个函数建立在不可能两个人使用同一个name和email的情况下
+function findPeople(name: string, email: string | null) {
   let finded;
-  if (userEmail) {
-    finded = _.find(atTable, { userEmail });
+  if (email) {
+    finded = _.find(atTable, { authorEmail: email });
+    if (!finded) {
+      finded = _.find(atTable, { userEmail: email });
+    }
   }
-  if (!finded && userName) {
-    finded = _.find(atTable, { userName });
+  if (!finded) {
+    finded = _.find(atTable, { authorName: name });
   }
-  if (finded) {
-    return [ finded.phone ];
+  if (!finded) {
+    finded = _.find(atTable, { userName: name });
   }
-  return [];
+  return finded;
+}
+
+function getMobile(name: string, email: string | null) {
+  const people = findPeople(name, email);
+  return people ? people.phone : null;
 }
 
 export default {
-  mobilesFromAuthor,
-  mobilesFromUser,
+  tryGetRealName,
+  findPeople,
+  getMobile,
 };

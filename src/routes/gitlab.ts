@@ -18,7 +18,9 @@ function handleMergeRequestEvent(ctx: RouterContext) {
   const body = ctx.request.body;
   // 只处理新打开
   if (body.object_attributes.state === 'opened' || body.object_attributes.state === 'reopened') {
-    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestEvent(body));
+    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestOpenEvent(body));
+  } else if (body.object_attributes.state === 'closed') {
+    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestClosedEvent(body));
   }
 }
 
