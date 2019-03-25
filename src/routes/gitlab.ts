@@ -22,6 +22,13 @@ function handleMergeRequestEvent(ctx: RouterContext) {
   }
 }
 
+function handlePipelineEvent(ctx: RouterContext) {
+  const body = ctx.request.body;
+  if (body.object_attributes.status === 'success' || body.object_attributes.status === 'failed') {
+    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generatePipelineEvent(body));
+  }
+}
+
 export default function() {
   const router = new KoaRouter();
   router.post('/gitlab', async (ctx, next) => {
@@ -33,6 +40,9 @@ export default function() {
         break;
       case 'merge_request':
         handleMergeRequestEvent(ctx);
+        break;
+      case 'pipeline':
+        handlePipelineEvent(ctx);
         break;
       default:
         ctx.state.data = 'unsupport kind';
