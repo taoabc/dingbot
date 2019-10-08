@@ -10,9 +10,8 @@ function createFileTransport(dir: string, filename: string, level: string | null
   const filepath = path.resolve(dir, filename);
   const opt: FileTransportOptions = {
     filename: filepath,
-    // maxsize: 2000,
-    // maxFiles: 5,
-    // zippedArchive: true
+    maxsize: 10 * 1024 * 1024,
+    maxFiles: 5
   };
   if (level) {
     opt.level = level;
@@ -22,6 +21,10 @@ function createFileTransport(dir: string, filename: string, level: string | null
 
 const logger = winston.createLogger({
   level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
   transports: [
     createFileTransport(logdir, 'error.log', 'error'),
     createFileTransport(logdir, 'combined.log', null),

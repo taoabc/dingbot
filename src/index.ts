@@ -5,6 +5,9 @@ import output from './middleware/output';
 import gitlabRouter from './routes/gitlab';
 import { config } from './data';
 import KoaRouter from 'koa-router';
+import logger from './services/logger'
+
+logger.info('app started');
 
 const app = new Koa();
 
