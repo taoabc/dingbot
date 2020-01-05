@@ -1,6 +1,6 @@
 export enum EmployeeField {
-  AUTHOR_NAME = 'authorEmail',
   REAL_NAME = 'realName',
+  AUTHOR_NAME = 'authorName',
   AUTHOR_EMAIL = 'authorEmail',
   USER_NAME = 'userName',
   USER_EMAIL = 'userEmail',
