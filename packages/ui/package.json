@@ -2,10 +2,10 @@
   "name": "@dingbot/ui",
   "version": "0.1.0",
   "private": true,
-  "main": "index.js",
+  "main": "dist/path.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && tsc path.ts --outDir dist/ -d",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"

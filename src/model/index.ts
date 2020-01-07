@@ -7,7 +7,7 @@ type EmployeeDoc = PouchDB.Core.AllDocsResponse<Employee>;
 const DATABASE_PATH = 'db/employee';
 let db: PouchDB.Database<Employee>;
 
-async function initDB(): Promise<void> {
+function initDB(): void {
   PouchDB.plugin(PouchDBFind);
   db = new PouchDB(DATABASE_PATH);
   db.createIndex({
@@ -16,13 +16,13 @@ async function initDB(): Promise<void> {
 }
 
 function notFind(result: PouchDB.Find.FindResponse<{}> | null): boolean {
-  return result != null && result.docs.length === 0;
+  return result == null || result.docs.length === 0;
 }
 
 async function find(name: string, email?: string): Promise<Employee | null> {
   let result: PouchDB.Find.FindResponse<Employee> | null = null;
   if (email) {
-    result = await db.get(email);
+    result = await db.find({ selector: { [EmployeeField.USER_EMAIL]: email } });
     if (notFind(result)) {
       result = await db.find({
         selector: { [EmployeeField.AUTHOR_EMAIL]: email }
@@ -30,13 +30,17 @@ async function find(name: string, email?: string): Promise<Employee | null> {
     }
   }
   if (notFind(result)) {
-    result = await db.find({ selector: { [EmployeeField.USER_NAME]: name } });
-  }
-  if (notFind(result)) {
-    result = await db.find({ selector: { [EmployeeField.AUTHOR_NAME]: name } });
+    try {
+      const getResult = await db.get(name);
+      return getResult;
+    } catch {
+      result = await db.find({
+        selector: { [EmployeeField.AUTHOR_NAME]: name }
+      });
+    }
   }
   if (!notFind(result)) {
-    if (result) return result.docs[0];
+    return result ? result.docs[0] : null;
   }
   return null;
 }
@@ -48,7 +52,7 @@ async function getRealName(name: string, email?: string): Promise<string> {
 
 async function getPhone(name: string, email?: string): Promise<string | null> {
   const employee = await find(name, email);
-  return employee ? employee[EmployeeField.PHONE] : null;
+  return employee ? employee.phone : null;
 }
 
 async function add(employee: Employee): Promise<PouchDB.Core.Response>;
@@ -63,7 +67,7 @@ async function add(
   if (Array.isArray(employee)) {
     const bulk: PouchDB.Core.PutDocument<Employee>[] = [];
     for (const emp of employee) {
-      bulk.push({ _id: emp.userName, ...employee });
+      bulk.push({ _id: emp.userName, ...emp });
     }
     return db.bulkDocs(bulk);
   } else {
@@ -74,14 +78,31 @@ async function add(
 async function getAll(): Promise<Employee[]> {
   const emps: Employee[] = [];
   // eslint-disable-next-line @typescript-eslint/camelcase
-  const docs: EmployeeDoc = await db.allDocs({ include_docs: true });
+  const docs: EmployeeDoc = await db.allDocs({
+    include_docs: true,
+    startkey: '_design'
+  });
   for (const row of docs.rows) {
     const emp = row.doc;
-    if (emp) {
+    if (emp && emp.phone) {
       emps.push(emp);
     }
   }
   return emps;
 }
 
-export { initDB, add, find, getRealName, getPhone, getAll };
+function destroy(): Promise<void> {
+  return db.destroy();
+}
+
+export {
+  initDB,
+  add,
+  find,
+  getRealName,
+  getPhone,
+  getAll,
+  destroy,
+  Employee,
+  EmployeeField
+};
