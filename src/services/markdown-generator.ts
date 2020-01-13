@@ -119,10 +119,10 @@ async function generatePipelineEvent(
   const status = success ? '成功' : '失败';
   const authorName = data.commit.author.name;
   const authorEmail = data.commit.author.email;
-  const mobile = at.getMobile(authorName, authorEmail);
+  const mobile = await getPhone(authorName, authorEmail);
   const mobiles = mobile ? [mobile] : [];
   const shortSha = data.object_attributes.sha.slice(0, 7);
-  const realName = at.tryGetRealName(authorName);
+  const realName = await getRealName(authorName);
   const people = makeRemindText(realName, mobiles, !success);
   return {
     msgtype: 'markdown',

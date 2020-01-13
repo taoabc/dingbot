@@ -80,7 +80,7 @@ async function getAll(): Promise<Employee[]> {
   const docs: EmployeeDoc = await db.allDocs({
     // eslint-disable-next-line @typescript-eslint/camelcase
     include_docs: true,
-    startkey: '_design'
+    startkey: '_design/'
   });
   for (const row of docs.rows) {
     const emp = row.doc;

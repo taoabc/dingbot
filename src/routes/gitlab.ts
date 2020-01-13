@@ -1,10 +1,12 @@
 /**
  * @remark gitlab专用
  */
+import * as Koa from 'koa';
 import KoaRouter, { RouterContext } from 'koa-router';
 import dingbotRequest from '../services/dingbot-request';
 import markdownGenerator from '../services/markdown-generator';
 import logger from '../services/logger';
+import { getAll, add } from '../model';
 
 function handleBuildEvent(ctx: RouterContext): void {
   const body = ctx.request.body;
@@ -36,22 +38,40 @@ function handleMergeRequestEvent(ctx: RouterContext): void {
   }
 }
 
-function handlePipelineEvent(ctx: RouterContext): void {
+async function handlePipelineEvent(ctx: RouterContext): Promise<void> {
   const body = ctx.request.body;
   if (
     body.object_attributes.status === 'success' ||
     body.object_attributes.status === 'failed'
   ) {
+    const a = await markdownGenerator.generatePipelineEvent(body);
     dingbotRequest(
       ctx.query.dingtoken,
-      markdownGenerator.generatePipelineEvent(body)
+      // await markdownGenerator.generatePipelineEvent(body)
+      a
     );
   }
 }
 
+async function userGetAll(
+  ctx: Koa.Context,
+  next: () => unknown
+): Promise<unknown> {
+  ctx.state.data = await getAll();
+  return next();
+}
+
+async function importUser(
+  ctx: Koa.Context,
+  next: () => unknown
+): Promise<unknown> {
+  ctx.state.data = await add(ctx.request.body);
+  return next();
+}
+
 export default function(): KoaRouter {
   const router = new KoaRouter();
-  router.post('/gitlab', async (ctx, next) => {
+  router.post('/gitlab', (ctx, next) => {
     const postbody = ctx.request.body;
     logger.info(postbody);
     switch (postbody.object_kind) {
@@ -67,8 +87,11 @@ export default function(): KoaRouter {
       default:
         ctx.state.data = 'unsupport kind';
     }
-    await next();
+    return next();
   });
+
+  router.post('/user/getAll', userGetAll);
+  router.post('/user/import', importUser);
 
   return router;
 }

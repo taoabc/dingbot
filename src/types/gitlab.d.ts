@@ -51,3 +51,56 @@ export interface MergeRequestCloseEvent {
 export interface PipelineEvent {
   [key: string]: any;
 }
+
+/**
+ * pipeline data 11.8.0
+ * {
+  "object_kind": "pipeline",
+  "object_attributes": {
+    "id": 162,
+    "ref": "ci-test",
+    "tag": false,
+    "sha": "87fe863df526efe4bc8e1084b3dcc7804cf1298d",
+    "before_sha": null,
+    "status": "failed",
+    "detailed_status": "passed",
+    "stages": [
+      "external"
+    ],
+    "created_at": "2019-03-25 11:56:57 UTC",
+    "finished_at": "2019-03-25 11:58:32 UTC",
+    "duration": 0,
+    "variables": []
+  },
+  "user": {
+    "name": "胡海涛",
+    "username": "huhaitao",
+    "avatar_url": "https://secure.gravatar.com/avatar/7c552b23458fe9312cc483c67e52058c?s=80&d=identicon"
+  },
+  "project": {
+    "id": 2990,
+    "name": "blackboard",
+    "description": null,
+    "web_url": "https://git.100tal.com/peiyou_like_shuangshi_web/blackboard",
+    "avatar_url": null,
+    "git_ssh_url": "git@git.100tal.com:peiyou_like_shuangshi_web/blackboard.git",
+    "git_http_url": "https://git.100tal.com/peiyou_like_shuangshi_web/blackboard.git",
+    "namespace": "peiyou_like_shuangshi_web",
+    "visibility_level": 0,
+    "path_with_namespace": "peiyou_like_shuangshi_web/blackboard",
+    "default_branch": "master",
+    "ci_config_path": null
+  },
+  "commit": {
+    "id": "87fe863df526efe4bc8e1084b3dcc7804cf1298d",
+    "message": "Merge branch 'shiying_dev' into 'master'\n\nShiying dev\n\nSee merge request peiyou_like_shuangshi_web/blackboard!92",
+    "timestamp": "2019-03-25T11:36:07Z",
+    "url": "https://git.100tal.com/peiyou_like_shuangshi_web/blackboard/commit/87fe863df526efe4bc8e1084b3dcc7804cf1298d",
+    "author": {
+      "name": "zengyong",
+      "email": "zengyong@100tal.com"
+    }
+  },
+  "builds": []
+}
+ */

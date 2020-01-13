@@ -6,8 +6,11 @@ import gitlabRouter from './routes/gitlab';
 import { config } from './data';
 import KoaRouter from 'koa-router';
 import logger from './services/logger';
+import { initDB } from './model';
 
 logger.info('app started');
+
+initDB();
 
 const app = new Koa();
 

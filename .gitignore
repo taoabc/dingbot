@@ -3,6 +3,7 @@
 at-table.ts
 config.ts
 dist/
+db/
 
 # Logs
 logs
