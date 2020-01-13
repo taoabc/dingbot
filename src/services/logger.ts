@@ -6,7 +6,11 @@ import { FileTransportOptions } from 'winston/lib/winston/transports';
 const logdir = path.resolve(__dirname, '../../logs');
 fs.ensureDirSync(logdir);
 
-function createFileTransport(dir: string, filename: string, level: string | null) {
+function createFileTransport(
+  dir: string,
+  filename: string,
+  level: string | null
+): winston.transports.FileTransportInstance {
   const filepath = path.resolve(dir, filename);
   const opt: FileTransportOptions = {
     filename: filepath,
@@ -27,17 +31,17 @@ const logger = winston.createLogger({
   ),
   transports: [
     createFileTransport(logdir, 'error.log', 'error'),
-    createFileTransport(logdir, 'combined.log', null),
+    createFileTransport(logdir, 'combined.log', null)
   ],
-  exceptionHandlers: [
-    createFileTransport(logdir, 'exceptions.log', null),
-  ],
+  exceptionHandlers: [createFileTransport(logdir, 'exceptions.log', null)]
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-  }));
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple()
+    })
+  );
 }
 
 export default logger;

@@ -1,13 +1,16 @@
-import { RouterContext } from 'koa-router';
-async function output(ctx: RouterContext, next: () => Promise<any>) {
+import * as Koa from 'koa';
+function output(
+  ctx: Koa.Context,
+  next: () => Promise<unknown>
+): Promise<unknown> {
   ctx.body = {
     code: ctx.state.code || 0,
     msg: ctx.state.msg || 'ok',
     data: ctx.state.data
   };
-  await next();
+  return next();
 }
 
-export default function(/* opts */) {
+export default function(/* opts */): Koa.Middleware {
   return output;
 }

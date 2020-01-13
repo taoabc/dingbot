@@ -52,7 +52,7 @@ const data: model.Employee[] = [
 ];
 
 test('initDB', () => {
-  expect(model.initDB()).toBeUndefined();
+  expect(model.initDB()).toBeFalsy();
 });
 
 test('add to db', () => {

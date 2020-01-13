@@ -77,8 +77,8 @@ async function add(
 
 async function getAll(): Promise<Employee[]> {
   const emps: Employee[] = [];
-  // eslint-disable-next-line @typescript-eslint/camelcase
   const docs: EmployeeDoc = await db.allDocs({
+    // eslint-disable-next-line @typescript-eslint/camelcase
     include_docs: true,
     startkey: '_design'
   });

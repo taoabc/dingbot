@@ -1,17 +1,20 @@
+import * as Koa from 'koa';
 import { config } from '../data';
-import { RouterContext } from 'koa-router';
 
-async function tokenValidate(ctx: RouterContext, next: () => Promise<any>) {
+function tokenValidate(
+  ctx: Koa.Context,
+  next: () => Promise<unknown>
+): unknown {
   if (ctx.query.token === config.token) {
-    await next();
+    return next();
   } else {
     ctx.body = {
       code: -1,
-      msg: 'invalid token',
+      msg: 'invalid token'
     };
   }
 }
 
-export default function(/* opts */) {
+export default function(/* opts */): Koa.Middleware {
   return tokenValidate;
 }

@@ -6,32 +6,50 @@ import dingbotRequest from '../services/dingbot-request';
 import markdownGenerator from '../services/markdown-generator';
 import logger from '../services/logger';
 
-function handleBuildEvent(ctx: RouterContext) {
+function handleBuildEvent(ctx: RouterContext): void {
   const body = ctx.request.body;
   // 中间过程不处理
   if (body.build_status === 'success' || body.build_status === 'failed') {
-    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateBuildEvent(body));
+    dingbotRequest(
+      ctx.query.dingtoken,
+      markdownGenerator.generateBuildEvent(body)
+    );
   }
 }
 
-function handleMergeRequestEvent(ctx: RouterContext) {
+function handleMergeRequestEvent(ctx: RouterContext): void {
   const body = ctx.request.body;
   // 只处理新打开
-  if (body.object_attributes.state === 'opened' || body.object_attributes.state === 'reopened') {
-    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestOpenEvent(body));
+  if (
+    body.object_attributes.state === 'opened' ||
+    body.object_attributes.state === 'reopened'
+  ) {
+    dingbotRequest(
+      ctx.query.dingtoken,
+      markdownGenerator.generateMergeRequestOpenEvent(body)
+    );
   } else if (body.object_attributes.state === 'closed') {
-    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generateMergeRequestClosedEvent(body));
+    dingbotRequest(
+      ctx.query.dingtoken,
+      markdownGenerator.generateMergeRequestClosedEvent(body)
+    );
   }
 }
 
-function handlePipelineEvent(ctx: RouterContext) {
+function handlePipelineEvent(ctx: RouterContext): void {
   const body = ctx.request.body;
-  if (body.object_attributes.status === 'success' || body.object_attributes.status === 'failed') {
-    dingbotRequest(ctx.query.dingtoken, markdownGenerator.generatePipelineEvent(body));
+  if (
+    body.object_attributes.status === 'success' ||
+    body.object_attributes.status === 'failed'
+  ) {
+    dingbotRequest(
+      ctx.query.dingtoken,
+      markdownGenerator.generatePipelineEvent(body)
+    );
   }
 }
 
-export default function() {
+export default function(): KoaRouter {
   const router = new KoaRouter();
   router.post('/gitlab', async (ctx, next) => {
     const postbody = ctx.request.body;
