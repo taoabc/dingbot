@@ -2,7 +2,7 @@ import axios from 'axios';
 import logger from './logger';
 import crypto from 'crypto';
 
-const DONGDONG_SEND = 'https://oapi.dingtalk.com/robot/send';
+const SEND_URL = 'https://yach-oapi.zhiyinlou.com/robot/send';
 
 function getSign(key: string, timestamp: number): string {
   const toSign = `${timestamp}\n${key}`;
@@ -10,14 +10,13 @@ function getSign(key: string, timestamp: number): string {
   return hmac;
 }
 
-const signKey =
-  'SEC957586ea353032bca665961828793ebf7e9b79d34d7a466f5972ab58f2209d32';
+const signKey = 'SEC454a5d197f5b9561dd9e82cf8a65a144';
 
 async function doRequest(token: string, body: unknown): any {
   const timestamp = Date.now();
 
   const response = await axios
-    .post(DONGDONG_SEND, body, {
+    .post(SEND_URL, body, {
       params: {
         // eslint-disable-next-line @typescript-eslint/camelcase
         access_token: token,
