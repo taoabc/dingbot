@@ -8,7 +8,7 @@ function makeRemindText(
 ): string {
   if (preferAt && mobiles.length > 0) {
     let str = '';
-    mobiles.forEach(m => {
+    mobiles.forEach((m) => {
       str += `@${m}`;
     });
     return str;
@@ -31,7 +31,7 @@ async function generateBuildEvent(
   const shortSha = data.commit.sha.slice(0, 7);
   const [mobile, realName] = await Promise.all<string | null, string>([
     getPhone(authorName, authorEmail),
-    getRealName(authorName, authorEmail)
+    getRealName(authorName, authorEmail),
   ]);
   const mobiles = mobile ? [mobile] : [];
   const people = makeRemindText(
@@ -47,12 +47,12 @@ async function generateBuildEvent(
         `## ${people} 代码在**${data.build_stage}**阶段${status}\n` +
         `> 分支：${data.ref}\n\n` +
         `> 最后提交信息：${data.commit.message}\n\n` +
-        `> hash:[${shortSha}](${data.repository.homepage}/commit/${data.commit.sha})`
+        `> hash:[${shortSha}](${data.repository.homepage}/commit/${data.commit.sha})`,
     },
     at: {
       atMobiles: mobiles,
-      isAtAll: false
-    }
+      isAtAll: false,
+    },
   };
 }
 
@@ -73,12 +73,12 @@ async function generateMergeRequestOpenEvent(
         `## ${remind}，${opRealName} 请求分支合入${data.object_attributes.target_branch}\n` +
         `> 源分支：${data.object_attributes.source_branch}\n\n` +
         `> 合并信息(点击查看)：[${data.object_attributes.title}](${data.object_attributes.url})\n\n` +
-        `> 最后提交信息：${data.object_attributes.last_commit.message}`
+        `> 最后提交信息：${data.object_attributes.last_commit.message}`,
     },
     at: {
       atMobiles: mobiles,
-      isAtAll: false
-    }
+      isAtAll: false,
+    },
   };
 }
 
@@ -91,7 +91,7 @@ async function generateMergeRequestClosedEvent(
   const mobiles = mobile ? [mobile] : [];
   const [atRealName, opRealName] = await Promise.all<string, string>([
     getRealName(atName, atEmail),
-    getRealName(data.user.username)
+    getRealName(data.user.username),
   ]);
   const remind = makeRemindText(atRealName, mobiles, true);
   return {
@@ -103,12 +103,12 @@ async function generateMergeRequestClosedEvent(
         `> 源分支：${data.object_attributes.source_branch}\n\n` +
         `> 合入分支：${data.object_attributes.target_branch}\n` +
         `> 合并信息(点击查看)：[${data.object_attributes.title}](${data.object_attributes.url})\n\n` +
-        `> 最后提交信息：${data.object_attributes.last_commit.message}`
+        `> 最后提交信息：${data.object_attributes.last_commit.message}`,
     },
     at: {
       atMobiles: mobiles,
-      isAtAll: false
-    }
+      isAtAll: false,
+    },
   };
 }
 
@@ -132,12 +132,12 @@ async function generatePipelineEvent(
         `## ${people} 代码构建 **${status}**\n` +
         `> 分支：${data.object_attributes.ref}\n\n` +
         `> 最后提交信息：${data.commit.message}\n\n` +
-        `> 点击查看:[${shortSha}](${data.commit.url})`
+        `> 点击查看:[${shortSha}](${data.commit.url})`,
     },
     at: {
       atMobiles: mobiles,
-      isAtAll: false
-    }
+      isAtAll: false,
+    },
   };
 }
 
@@ -145,5 +145,5 @@ export default {
   generateBuildEvent,
   generateMergeRequestOpenEvent,
   generateMergeRequestClosedEvent,
-  generatePipelineEvent
+  generatePipelineEvent,
 };
