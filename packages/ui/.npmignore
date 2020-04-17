@@ -1,0 +1,10 @@
+public/
+src/
+tests/
+.browserslistrc
+.eslintrc.js
+babel.config.js
+exp.ts
+jest.config.js
+tsconfig.json
+vue.config.js

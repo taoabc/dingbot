@@ -1,5 +1,5 @@
 import { getRealName, getPhone } from '../model';
-import * as GitlabType from 'src/types/gitlab';
+import * as GitlabType from '../types/gitlab';
 
 function makeRemindText(
   realName: string,
