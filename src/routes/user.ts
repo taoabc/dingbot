@@ -4,6 +4,7 @@
 import * as Koa from 'koa';
 import KoaRouter from 'koa-router';
 import jwt from 'jsonwebtoken';
+import { user } from '../model';
 import config from '../config';
 
 async function logout(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
@@ -11,10 +12,29 @@ async function logout(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
 }
 
 async function login(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
-  ctx.state.data = jwt.sign({ uid: 'asdf' }, config.jwtKey, {
-    expiresIn: '7d',
-  });
+  const uid = ctx.request.body.uid;
+  const password = ctx.request.body.password;
+  let ok = false;
+  if (typeof uid === 'string' && typeof password === 'string') {
+    ok = await user.check(uid, password);
+    if (ok) {
+      ctx.state.data = jwt.sign({ uid }, config.jwtKey, {
+        expiresIn: '7d',
+      });
+    }
+  }
+
+  if (!ok) {
+    ctx.state.code = -2;
+    ctx.state.msg = 'username and password not match';
+  }
   // ctx.data = await updateUser();
+  return next();
+}
+
+async function add(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
+  const body = ctx.request.body;
+  await user.add(body.uid, body.password, body.nick);
   return next();
 }
 
@@ -22,6 +42,7 @@ export default function (): KoaRouter {
   const router = new KoaRouter();
 
   router.post('/user/login', login);
+  router.post('/user/add', add);
   router.post('/user/logout', logout);
 
   return router;

@@ -6,6 +6,7 @@ import initUserDB from './user';
 
 export * as employee from './employee';
 export * as signKey from './sign-key';
+export * as user from './user';
 
 function initDB(): void {
   PouchDB.plugin(PouchDBFind);
