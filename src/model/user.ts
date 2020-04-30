@@ -9,7 +9,7 @@ export interface Account {
 
 type AccountDoc = PouchDB.Core.AllDocsResponse<Account>;
 
-const DATABASE_PATH = 'db/account';
+const DATABASE_PATH = 'db/user';
 let db: PouchDB.Database<Account>;
 
 function initDB(): void {

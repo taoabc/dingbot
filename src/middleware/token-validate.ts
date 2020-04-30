@@ -8,7 +8,7 @@ import { pathToRegexp } from 'path-to-regexp';
 import { INDEX_ROUTE, STATIC_ROUTE } from '../routes/web';
 import { UserInfo } from '../types/UserInfo';
 
-const WHITE_LIST_PATHS = new Set<string>(['/user/login']);
+const WHITE_LIST_PATHS = new Set<string>(['/user/login', '/gitlab']);
 
 const STATIC_REGEXP = pathToRegexp(STATIC_ROUTE);
 
