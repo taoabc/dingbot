@@ -3,10 +3,11 @@ import bodyParser from 'koa-bodyparser';
 import tokenValidate from './middleware/token-validate';
 import output from './middleware/output';
 import gitlabRouter from './routes/gitlab';
-import userRouter from './routes/user';
+import userRouter from './routes/employee';
 import signKeyRouter from './routes/sign-key';
 import web from './routes/web';
-import { config } from './data';
+import account from './routes/user';
+import config from './config';
 import KoaRouter from 'koa-router';
 import logger from './services/logger';
 import initDB from './model';
@@ -26,7 +27,14 @@ function applyRouters(koaApp: Koa, ...routers: KoaRouter[]): void {
 
 app.use(bodyParser());
 app.use(tokenValidate());
-applyRouters(app, gitlabRouter(), userRouter(), signKeyRouter(), web());
+applyRouters(
+  app,
+  gitlabRouter(),
+  userRouter(),
+  signKeyRouter(),
+  web(),
+  account()
+);
 app.use(output());
 
 app.listen(config.port);

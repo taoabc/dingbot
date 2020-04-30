@@ -6,7 +6,7 @@ import dingbotRequest from '../services/dingbot-request';
 import yachRequest from '../services/yach-request';
 import markdownGenerator from '../services/markdown-generator';
 import logger from '../services/logger';
-import { findSignKey } from '../model';
+import { signKey } from '../model';
 
 interface GitlabRequestQuery {
   token: string;
@@ -20,12 +20,12 @@ async function request(
 ): Promise<unknown[]> {
   const promises = [];
   if (query.dingtoken) {
-    const signKey = await findSignKey(query.dingtoken);
-    promises.push(dingbotRequest(query.dingtoken, signKey, body));
+    const key = await signKey.find(query.dingtoken);
+    promises.push(dingbotRequest(query.dingtoken, key, body));
   }
   if (query.yachtoken) {
-    const signKey = await findSignKey(query.yachtoken);
-    promises.push(yachRequest(query.yachtoken, signKey, body));
+    const key = await signKey.find(query.yachtoken);
+    promises.push(yachRequest(query.yachtoken, key, body));
   }
   return Promise.all(promises);
 }

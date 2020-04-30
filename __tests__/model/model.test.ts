@@ -1,4 +1,4 @@
-import * as model from '../../src/model';
+import { employee, signKey } from '../../src/model';
 import initDB from '../../src/model';
 
 const data: model.Employee[] = [
@@ -57,65 +57,63 @@ test('initDB', () => {
 });
 
 test('add to db', () => {
-  return expect(model.addUser(data)).resolves.toBeTruthy();
+  return expect(employee.add(data)).resolves.toBeTruthy();
 });
 
 test('get All', () => {
-  return expect(model.getAllUsers()).resolves.toHaveLength(6);
+  return expect(employee.getAll()).resolves.toHaveLength(6);
 });
 
 test('find by email', () => {
   return expect(
-    model.findUser('htuser', 'lilyauthor@a.com')
+    employee.find('htuser', 'lilyauthor@a.com')
   ).resolves.toMatchObject(data[3]);
 });
 
 test('find by userName', () => {
-  return expect(
-    model.findUser('lileiuser', 'aaa@a.com')
-  ).resolves.toMatchObject(data[4]);
+  return expect(employee.find('lileiuser', 'aaa@a.com')).resolves.toMatchObject(
+    data[4]
+  );
 });
 
 test('get phone', () => {
-  return expect(model.getPhone('lilyauthor')).resolves.toBe(data[3].phone);
+  return expect(employee.getPhone('lilyauthor')).resolves.toBe(data[3].phone);
 });
 
 test('get realName', () => {
-  return expect(model.getRealName('haha', 'htUser@a.com')).resolves.toBe(
+  return expect(employee.getRealName('haha', 'htUser@a.com')).resolves.toBe(
     data[5].realName
   );
 });
 
 test('find nothing', () => {
-  return expect(model.findUser('haha', 'heihei@a.com')).resolves.toBeNull();
+  return expect(employee.find('haha', 'heihei@a.com')).resolves.toBeNull();
 });
 
 test('add sign key', () => {
   return Promise.all([
-    expect(model.addSignKey('token1', 'signkey1')).resolves.toBeTruthy(),
-    expect(model.addSignKey('token2', 'signkey2')).resolves.toBeTruthy(),
+    expect(signKey.add('token1', 'signkey1')).resolves.toBeTruthy(),
+    expect(signKey.add('token2', 'signkey2')).resolves.toBeTruthy(),
   ]);
 });
 
 test('find sign key', () => {
-  return expect(model.findSignKey('token2')).resolves.toBe('signkey2');
+  return expect(signKey.find('token2')).resolves.toBe('signkey2');
 });
 
 test('update and find', async () => {
-  await expect(
-    model.updateSignKey('token2', 'signkey22')
-  ).resolves.toBeTruthy();
-  return expect(model.findSignKey('token2')).resolves.toBe('signkey22');
+  await expect(signKey.update('token2', 'signkey22')).resolves.toBeTruthy();
+  return expect(signKey.find('token2')).resolves.toBe('signkey22');
 });
 
 test('remove and find', async () => {
-  await expect(model.removeSignKey('token2')).resolves.toBeTruthy();
-  return expect(model.findSignKey('token2')).resolves.toBe('');
+  await expect(signKey.remove('token2')).resolves.toBeTruthy();
+  return expect(signKey.find('token2')).resolves.toBe('');
 });
 
 test('destroy model', async () => {
   return Promise.all([
-    expect(model.destroyUserDB()).resolves.toBeTruthy(),
-    expect(model.destroySignKeyDB()).resolves.toBeTruthy(),
+    expect(employee.destroyDB()).resolves.toBeTruthy(),
+    expect(signKey.destroyDB()).resolves.toBeTruthy(),
   ]);
 });

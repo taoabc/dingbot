@@ -1,13 +1,15 @@
 import PouchDB from 'pouchdb';
 import PouchDBFind from 'pouchdb-find';
 import initSignKeyDB from './sign-key';
+import initEmployeeDB from './employee';
 import initUserDB from './user';
 
-export * from './user';
-export * from './sign-key';
+export * as employee from './employee';
+export * as signKey from './sign-key';
 
 function initDB(): void {
   PouchDB.plugin(PouchDBFind);
+  initEmployeeDB();
   initUserDB();
   initSignKeyDB();
 }

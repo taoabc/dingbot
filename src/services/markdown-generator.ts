@@ -1,4 +1,4 @@
-import { getRealName, getPhone } from '../model';
+import { employee } from '../model';
 import * as GitlabType from '../types/gitlab';
 
 function makeRemindText(
@@ -30,8 +30,8 @@ async function generateBuildEvent(
   const authorEmail = data.commit.author_email;
   const shortSha = data.commit.sha.slice(0, 7);
   const [mobile, realName] = await Promise.all<string | null, string>([
-    getPhone(authorName, authorEmail),
-    getRealName(authorName, authorEmail),
+    employee.getPhone(authorName, authorEmail),
+    employee.getRealName(authorName, authorEmail),
   ]);
   const mobiles = mobile ? [mobile] : [];
   const people = makeRemindText(
@@ -60,11 +60,11 @@ async function generateMergeRequestOpenEvent(
   data: GitlabType.MergeRequestEvent
 ): Promise<object> {
   const userName = data.assignee.username;
-  const mobile = await getPhone(userName);
+  const mobile = await employee.getPhone(userName);
   const mobiles = mobile ? [mobile] : [];
-  const userRealName = await getRealName(userName);
+  const userRealName = await employee.getRealName(userName);
   const remind = makeRemindText(userRealName, mobiles, true);
-  const opRealName = await getRealName(data.user.username);
+  const opRealName = await employee.getRealName(data.user.username);
   return {
     msgtype: 'markdown',
     markdown: {
@@ -87,11 +87,11 @@ async function generateMergeRequestClosedEvent(
 ): Promise<object> {
   const atName = data.object_attributes.last_commit.author.name;
   const atEmail = data.object_attributes.last_commit.author.email;
-  const mobile = await getPhone(atName, atEmail);
+  const mobile = await employee.getPhone(atName, atEmail);
   const mobiles = mobile ? [mobile] : [];
   const [atRealName, opRealName] = await Promise.all<string, string>([
-    getRealName(atName, atEmail),
-    getRealName(data.user.username),
+    employee.getRealName(atName, atEmail),
+    employee.getRealName(data.user.username),
   ]);
   const remind = makeRemindText(atRealName, mobiles, true);
   return {
@@ -119,10 +119,10 @@ async function generatePipelineEvent(
   const status = success ? '成功' : '失败';
   const authorName = data.commit.author.name;
   const authorEmail = data.commit.author.email;
-  const mobile = await getPhone(authorName, authorEmail);
+  const mobile = await employee.getPhone(authorName, authorEmail);
   const mobiles = mobile ? [mobile] : [];
   const shortSha = data.object_attributes.sha.slice(0, 7);
-  const realName = await getRealName(authorName);
+  const realName = await employee.getRealName(authorName);
   const people = makeRemindText(realName, mobiles, !success);
   return {
     msgtype: 'markdown',

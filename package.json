@@ -19,6 +19,7 @@
     "dingbot-ui": "^0.1.0",
     "fs-extra": "^9.0.0",
     "js-yaml": "^3.13.1",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^8.0.8",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@types/fs-extra": "^8.1.0",
     "@types/jest": "^25.2.1",
+    "@types/jsonwebtoken": "^8.3.9",
     "@types/koa": "^2.11.3",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-router": "^7.4.0",

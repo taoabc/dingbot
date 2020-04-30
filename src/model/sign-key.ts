@@ -11,11 +11,11 @@ type SignKeyDoc = PouchDB.Core.AllDocsResponse<SignKey>;
 const DATABASE_PATH = 'db/signkey';
 let db: PouchDB.Database<SignKey>;
 
-function initSignKeyDB(): void {
+function initDB(): void {
   db = new PouchDB(DATABASE_PATH);
 }
 
-async function findSignKey(token: string): Promise<string> {
+async function find(token: string): Promise<string> {
   try {
     const result = await db.get(token);
     return result.signKey;
@@ -23,18 +23,18 @@ async function findSignKey(token: string): Promise<string> {
     return '';
   }
 }
-function destroySignKeyDB(): Promise<void> {
+function destroyDB(): Promise<void> {
   return db.destroy();
 }
 
-async function addSignKey(
+async function add(
   token: string,
   signKey: string
 ): Promise<PouchDB.Core.Response> {
   return db.put({ _id: token, token, signKey });
 }
 
-async function updateSignKey(
+async function update(
   token: string,
   signKey: string
 ): Promise<PouchDB.Core.Response | void> {
@@ -47,7 +47,7 @@ async function updateSignKey(
   }
 }
 
-async function removeSignKey(token: string): Promise<boolean> {
+async function remove(token: string): Promise<boolean> {
   try {
     const doc = await db.get(token);
     const response = await db.remove(doc);
@@ -58,7 +58,7 @@ async function removeSignKey(token: string): Promise<boolean> {
   }
 }
 
-async function getAllSignKey(): Promise<SignKey[]> {
+async function getAll(): Promise<SignKey[]> {
   const result: SignKey[] = [];
   const docs: SignKeyDoc = await db.allDocs({
     // eslint-disable-next-line @typescript-eslint/camelcase
@@ -74,13 +74,6 @@ async function getAllSignKey(): Promise<SignKey[]> {
   return result;
 }
 
-export {
-  getAllSignKey,
-  addSignKey,
-  updateSignKey,
-  findSignKey,
-  removeSignKey,
-  destroySignKeyDB,
-};
+export { getAll, add, update, find, remove, destroyDB };
 
-export default initSignKeyDB;
+export default initDB;
