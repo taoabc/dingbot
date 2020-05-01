@@ -17,7 +17,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "axios": "^0.19.2",
-    "dingbot-ui": "^0.1.0",
+    "dingbot-ui": "^1.0.0",
     "fs-extra": "^9.0.0",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^8.5.1",

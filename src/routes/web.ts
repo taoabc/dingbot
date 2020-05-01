@@ -8,7 +8,7 @@ import koaSend from 'koa-send';
 import { rootPath, staticRrefix } from 'dingbot-ui';
 
 export const INDEX_ROUTE = '/';
-export const STATIC_ROUTE = `/${staticRrefix()}/:p(.+)+`;
+export const STATIC_ROUTE = `/${staticRrefix()}/:p(.*)+`;
 
 async function sendIndex(
   ctx: Koa.Context
@@ -23,7 +23,8 @@ async function sendStatic(
   ctx: Koa.Context
   // next: () => unknown
 ): Promise<unknown> {
-  return koaSend(ctx, ctx.params['p'], {
+  const p = ctx.params['p'] || '/';
+  return koaSend(ctx, p, {
     root: rootPath(),
     index: 'index.html',
   });
