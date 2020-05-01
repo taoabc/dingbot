@@ -1,4 +1,6 @@
 import PouchDB from 'pouchdb';
+import _ from 'lodash';
+import logger from '../services/logger';
 
 export enum EmployeeField {
   REAL_NAME = 'realName', // display name
@@ -16,6 +18,10 @@ export interface Employee {
   [EmployeeField.USER_NAME]: string;
   [EmployeeField.USER_EMAIL]: string;
   [EmployeeField.PHONE]: string;
+}
+
+export interface StrObject {
+  [key: string]: string;
 }
 
 type EmployeeDoc = PouchDB.Core.AllDocsResponse<Employee>;
@@ -116,11 +122,34 @@ async function getAll(): Promise<Employee[]> {
   return emps;
 }
 
-async function update(
-  employee: Employee
-): Promise<PouchDB.Core.Response | void> {}
+async function update(employee: StrObject): Promise<boolean> {
+  const picked = _.pick(employee, [
+    EmployeeField.AUTHOR_EMAIL,
+    EmployeeField.AUTHOR_NAME,
+    EmployeeField.PHONE,
+    EmployeeField.REAL_NAME,
+    EmployeeField.USER_EMAIL,
+  ]);
+  try {
+    const doc = await db.get(employee.userName);
+    const response = await db.put({ ...doc, ...picked });
+    return response.ok;
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+}
 
-async function remove(): Promise<PouchDB.Core.Response | void> {}
+async function remove(username: string): Promise<boolean> {
+  try {
+    const doc = await db.get(username);
+    const response = await db.remove(doc);
+    return response.ok;
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+}
 
 export { add, update, remove, find, getRealName, getPhone, getAll, destroyDB };
 
