@@ -1,16 +1,18 @@
 import * as Koa from 'koa';
+import errorCode from '../code';
+
 function output(
   ctx: Koa.Context,
   next: () => Promise<unknown>
 ): Promise<unknown> {
   ctx.body = {
-    code: ctx.state.code || 0,
-    msg: ctx.state.msg || 'ok',
-    data: ctx.state.data
+    code: ctx.state.code || errorCode.OK,
+    msg: ctx.state.msg || '',
+    data: ctx.state.data,
   };
   return next();
 }
 
-export default function(/* opts */): Koa.Middleware {
+export default function (/* opts */): Koa.Middleware {
   return output;
 }

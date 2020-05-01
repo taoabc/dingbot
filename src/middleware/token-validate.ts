@@ -3,6 +3,7 @@
  */
 import * as Koa from 'koa';
 import jwt from 'jsonwebtoken';
+import ec from '../code';
 import config from '../config';
 import { pathToRegexp } from 'path-to-regexp';
 import { INDEX_ROUTE, STATIC_ROUTE } from '../routes/web';
@@ -42,7 +43,7 @@ async function tokenValidate(
     ctx.state.userInfo = userInfo;
     return next();
   }
-  ctx.body = { code: -1, msg: 'invalid token' };
+  ctx.body = { code: ec.E_INVALID_TOKEN, msg: 'invalid token' };
 }
 
 export default function (/* opts */): Koa.Middleware {
