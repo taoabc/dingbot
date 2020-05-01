@@ -36,7 +36,7 @@ async function update(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
 }
 
 async function remove(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
-  const ret = await employee.remove(ctx.request.body.username);
+  const ret = await employee.remove(ctx.request.body.userName);
   if (!ret) {
     ctx.state.code = err.E_UNKNOWN;
     ctx.state.msg = 'remove fail';
