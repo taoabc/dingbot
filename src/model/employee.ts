@@ -50,6 +50,17 @@ function notFind(result: PouchDB.Find.FindResponse<{}> | null): boolean {
   return result == null || result.docs.length === 0;
 }
 
+function pickEmployee(emp: Employee): Employee {
+  return _.pick(emp, [
+    EmployeeField.USER_NAME,
+    EmployeeField.AUTHOR_EMAIL,
+    EmployeeField.AUTHOR_NAME,
+    EmployeeField.PHONE,
+    EmployeeField.REAL_NAME,
+    EmployeeField.USER_EMAIL,
+  ]);
+}
+
 async function find(name: string, email?: string): Promise<Employee | null> {
   let result: PouchDB.Find.FindResponse<Employee> | null = null;
   if (email) {
@@ -98,11 +109,13 @@ async function add(
   if (Array.isArray(employee)) {
     const bulk: PouchDB.Core.PutDocument<Employee>[] = [];
     for (const emp of employee) {
-      bulk.push({ _id: emp.userName, ...emp });
+      const picked = pickEmployee(emp);
+      bulk.push({ _id: picked.userName, ...picked });
     }
     return db.bulkDocs(bulk);
   } else {
-    return db.put({ _id: employee.userName, ...employee });
+    const emp = pickEmployee(employee);
+    return db.put({ _id: emp.userName, ...emp });
   }
 }
 
@@ -124,6 +137,7 @@ async function getAll(): Promise<Employee[]> {
 
 async function update(employee: StrObject): Promise<boolean> {
   const picked = _.pick(employee, [
+    EmployeeField.USER_NAME,
     EmployeeField.AUTHOR_EMAIL,
     EmployeeField.AUTHOR_NAME,
     EmployeeField.PHONE,

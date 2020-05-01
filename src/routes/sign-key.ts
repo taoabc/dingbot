@@ -16,8 +16,8 @@ async function getAll(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
 
 async function add(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
   const token = ctx.request.body.token;
-  const signKey = ctx.request.body.signKey;
-  ctx.state.data = await signKey.add(token, signKey);
+  const key = ctx.request.body.signKey;
+  ctx.state.data = await signKey.add(token, key);
   return next();
 }
 
