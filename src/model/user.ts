@@ -20,13 +20,19 @@ function destroyDB(): Promise<void> {
   return db.destroy();
 }
 
-async function check(uid: string, password: string): Promise<boolean> {
+async function login(uid: string, password: string): Promise<unknown> {
   try {
     const doc = await db.get(uid);
-    return doc.password === password;
+    if (doc.password === password) {
+      return {
+        uid,
+        nick: doc.nick,
+      };
+    }
   } catch {
-    return false;
+    return null;
   }
+  return null;
 }
 
 async function add(
@@ -48,6 +54,6 @@ async function remove(uid: string): Promise<boolean> {
   }
 }
 
-export { check, add, remove, destroyDB };
+export { login, add, remove, destroyDB };
 
 export default initDB;

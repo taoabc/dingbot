@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
+import cors from '@koa/cors';
 import tokenValidate from './middleware/token-validate';
 import output from './middleware/output';
 import gitlabRouter from './routes/gitlab';
@@ -25,6 +26,7 @@ function applyRouters(koaApp: Koa, ...routers: KoaRouter[]): void {
   }
 }
 
+app.use(cors());
 app.use(bodyParser());
 app.use(tokenValidate());
 applyRouters(

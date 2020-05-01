@@ -16,11 +16,15 @@ async function login(ctx: Koa.Context, next: () => unknown): Promise<unknown> {
   const password = ctx.request.body.password;
   let ok = false;
   if (typeof uid === 'string' && typeof password === 'string') {
-    ok = await user.check(uid, password);
-    if (ok) {
-      ctx.state.data = jwt.sign({ uid }, config.jwtKey, {
-        expiresIn: '7d',
-      });
+    const info = await user.login(uid, password);
+    if (info != null && typeof info === 'object') {
+      ctx.state.data = {
+        ...info,
+        token: jwt.sign({ uid }, config.jwtKey, {
+          expiresIn: '7d',
+        }),
+      };
+      ok = true;
     }
   }
 

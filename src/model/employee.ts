@@ -26,7 +26,13 @@ let db: PouchDB.Database<Employee>;
 function initDB(): void {
   db = new PouchDB(DATABASE_PATH);
   db.createIndex({
-    index: { fields: ['authorName', 'authorEmail', 'userName', 'userEmail'] },
+    index: {
+      fields: [
+        EmployeeField.AUTHOR_NAME,
+        EmployeeField.AUTHOR_EMAIL,
+        EmployeeField.USER_EMAIL,
+      ],
+    },
   });
 }
 
