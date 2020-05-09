@@ -7,7 +7,7 @@ import ec from '../code';
 import config from '../config';
 import { pathToRegexp } from 'path-to-regexp';
 import { INDEX_ROUTE, STATIC_ROUTE } from '../routes/web';
-import { UserInfo } from '../types/UserInfo';
+import { UserInfo } from '../types/user-info';
 
 const WHITE_LIST_PATHS = new Set<string>(['/user/login', '/gitlab']);
 
