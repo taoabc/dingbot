@@ -7,6 +7,7 @@ import yachRequest from '../services/yach-request';
 import markdownGenerator from '../services/markdown-generator';
 import logger from '../services/logger';
 import { signKey } from '../model';
+import err from '../code';
 
 interface GitlabRequestQuery {
   token: string;
@@ -15,17 +16,26 @@ interface GitlabRequestQuery {
 }
 
 async function request(
+  ctx: RouterContext,
   query: GitlabRequestQuery,
   body: object
 ): Promise<unknown[]> {
   const promises = [];
   if (query.dingtoken) {
     const key = await signKey.find(query.dingtoken);
-    promises.push(dingbotRequest(query.dingtoken, key, body));
+    if (key) {
+      promises.push(dingbotRequest(query.dingtoken, key, body));
+    } else {
+      ctx.state.code = err.E_CAN_NOT_FIND_SIGN_KEY;
+    }
   }
   if (query.yachtoken) {
     const key = await signKey.find(query.yachtoken);
-    promises.push(yachRequest(query.yachtoken, key, body));
+    if (key) {
+      promises.push(yachRequest(query.yachtoken, key, body));
+    } else {
+      ctx.state.code = err.E_CAN_NOT_FIND_SIGN_KEY;
+    }
   }
   return Promise.all(promises);
 }
@@ -35,7 +45,7 @@ async function handleBuildEvent(ctx: RouterContext): Promise<void> {
   // 中间过程不处理
   if (body.build_status === 'success' || body.build_status === 'failed') {
     const requestBody = await markdownGenerator.generateBuildEvent(body);
-    request(ctx.query, requestBody);
+    request(ctx, ctx.query, requestBody);
   }
 }
 
@@ -52,7 +62,7 @@ async function handleMergeRequestEvent(ctx: RouterContext): Promise<void> {
     requestBody = await markdownGenerator.generateMergeRequestClosedEvent(body);
   }
   if (requestBody) {
-    request(ctx.query, requestBody);
+    request(ctx, ctx.query, requestBody);
   }
 }
 
@@ -63,7 +73,7 @@ async function handlePipelineEvent(ctx: RouterContext): Promise<void> {
     body.object_attributes.status === 'failed'
   ) {
     const requestBody = await markdownGenerator.generatePipelineEvent(body);
-    request(ctx.query, requestBody);
+    request(ctx, ctx.query, requestBody);
   }
 }
 

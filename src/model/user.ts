@@ -1,19 +1,38 @@
 import PouchDB from 'pouchdb';
+import config from '../config';
 import logger from '../services/logger';
 
-export interface Account {
+export interface User {
   uid: string;
   password: string;
   nick: string;
+  // group: string;
 }
 
-type AccountDoc = PouchDB.Core.AllDocsResponse<Account>;
+type UserDoc = PouchDB.Core.AllDocsResponse<User>;
 
 const DATABASE_PATH = 'db/user';
-let db: PouchDB.Database<Account>;
+let db: PouchDB.Database<User>;
 
-function initDB(): void {
+async function add(
+  uid: string,
+  password: string,
+  nick: string
+): Promise<PouchDB.Core.Response> {
+  return db.put({ _id: uid, uid, nick, password });
+}
+
+async function initDB(): Promise<void | Array<PouchDB.Core.Response>> {
   db = new PouchDB(DATABASE_PATH);
+  const info = await db.info();
+  // init admin when no user
+  if (info.doc_count === 0) {
+    const promises = [];
+    for (const admin of config.admin) {
+      promises.push(add(admin.username, admin.password, ''));
+    }
+    return Promise.all(promises);
+  }
 }
 
 function destroyDB(): Promise<void> {
@@ -33,14 +52,6 @@ async function login(uid: string, password: string): Promise<unknown> {
     return null;
   }
   return null;
-}
-
-async function add(
-  uid: string,
-  password: string,
-  nick: string
-): Promise<PouchDB.Core.Response> {
-  return db.put({ _id: uid, uid, nick, password });
 }
 
 async function remove(uid: string): Promise<boolean> {
