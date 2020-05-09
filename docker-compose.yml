@@ -1,14 +1,9 @@
 version: '3.1'
 services:
   server:
-    image: node:alpine
-    working_dir: /app
+    build: .
     ports:
       - '8001:8001'
     volumes:
-      - ./:/app
-    command:
-      - 'npm ci'
-      - 'npm run build'
-      - 'node .'
+      - ./logs:/usr/src/app/logs
     restart: always
