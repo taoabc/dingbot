@@ -3,7 +3,7 @@ services:
   server:
     build: .
     ports:
-      - '8001:8001'
+      - '8005:8001'
     volumes:
       - ./logs:/usr/src/app/logs/
       - ./db:/usr/src/app/db/
