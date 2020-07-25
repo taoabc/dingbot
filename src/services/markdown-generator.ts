@@ -26,6 +26,7 @@ async function generateBuildEvent(
   } else if (data.build_status === 'success') {
     status = '成功';
   }
+  const notSuccess = data.build_status !== 'success';
   const authorName = data.commit.author_name;
   const authorEmail = data.commit.author_email;
   const shortSha = data.commit.sha.slice(0, 7);
@@ -34,11 +35,8 @@ async function generateBuildEvent(
     employee.getRealName(authorName, authorEmail),
   ]);
   const mobiles = mobile ? [mobile] : [];
-  const people = makeRemindText(
-    realName,
-    mobiles,
-    data.build_status !== 'success'
-  );
+  const people = makeRemindText(realName, mobiles, notSuccess);
+  const atMobiles = notSuccess ? mobiles : [];
   return {
     msgtype: 'markdown',
     markdown: {
@@ -50,7 +48,7 @@ async function generateBuildEvent(
         `> hash:[${shortSha}](${data.repository.homepage}/commit/${data.commit.sha})`,
     },
     at: {
-      atMobiles: mobiles,
+      atMobiles,
       isAtAll: false,
     },
   };
