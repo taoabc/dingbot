@@ -122,6 +122,7 @@ async function generatePipelineEvent(
   const shortSha = data.object_attributes.sha.slice(0, 7);
   const realName = await employee.getRealName(authorName);
   const people = makeRemindText(realName, mobiles, !success);
+  const atMobiles = success ? [] : mobiles;
   return {
     msgtype: 'markdown',
     markdown: {
@@ -133,7 +134,7 @@ async function generatePipelineEvent(
         `> 点击查看:[${shortSha}](${data.commit.url})`,
     },
     at: {
-      atMobiles: mobiles,
+      atMobiles,
       isAtAll: false,
     },
   };
