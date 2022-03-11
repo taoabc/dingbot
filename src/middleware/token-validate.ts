@@ -38,7 +38,7 @@ async function tokenValidate(
   if (inWhiteList(ctx.path) || staticPath(ctx.path)) {
     return next();
   }
-  const userInfo = await checkToken(ctx.headers['x-token']);
+  const userInfo = await checkToken(ctx.headers['x-token'] as string);
   if (userInfo) {
     ctx.state.userInfo = userInfo;
     return next();

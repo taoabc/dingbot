@@ -45,7 +45,7 @@ async function handleBuildEvent(ctx: RouterContext): Promise<void> {
   // 中间过程不处理
   if (body.build_status === 'success' || body.build_status === 'failed') {
     const requestBody = await markdownGenerator.generateBuildEvent(body);
-    request(ctx, ctx.query, requestBody);
+    request(ctx, ctx.query as any, requestBody);
   }
 }
 
@@ -62,7 +62,7 @@ async function handleMergeRequestEvent(ctx: RouterContext): Promise<void> {
     requestBody = await markdownGenerator.generateMergeRequestClosedEvent(body);
   }
   if (requestBody) {
-    request(ctx, ctx.query, requestBody);
+    request(ctx, ctx.query as any, requestBody);
   }
 }
 
@@ -73,7 +73,7 @@ async function handlePipelineEvent(ctx: RouterContext): Promise<void> {
     body.object_attributes.status === 'failed'
   ) {
     const requestBody = await markdownGenerator.generatePipelineEvent(body);
-    request(ctx, ctx.query, requestBody);
+    request(ctx, ctx.query as any, requestBody);
   }
 }
 

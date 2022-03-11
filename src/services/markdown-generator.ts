@@ -30,7 +30,7 @@ async function generateBuildEvent(
   const authorName = data.commit.author_name;
   const authorEmail = data.commit.author_email;
   const shortSha = data.commit.sha.slice(0, 7);
-  const [mobile, realName] = await Promise.all<string | null, string>([
+  const [mobile, realName] = await Promise.all([
     employee.getPhone(authorName, authorEmail),
     employee.getRealName(authorName, authorEmail),
   ]);
@@ -87,7 +87,7 @@ async function generateMergeRequestClosedEvent(
   const atEmail = data.object_attributes.last_commit.author.email;
   const mobile = await employee.getPhone(atName, atEmail);
   const mobiles = mobile ? [mobile] : [];
-  const [atRealName, opRealName] = await Promise.all<string, string>([
+  const [atRealName, opRealName] = await Promise.all([
     employee.getRealName(atName, atEmail),
     employee.getRealName(data.user.username),
   ]);
